@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="iphone models .css">
+  <title>CaseCraft</title>
+</head>
+
+<body>
+  <header class="navbar">
+
+    <!-- Nav Links (Left side now) -->
+    <nav class="nav-links">
+      <a href="aboutUs.html">About Us</a>
+      <a href="login.html" id="login-link">Login</a>
+      <a href="signup.html" id="signup-link">Sign Up</a>
+      <a href="design.html" id="signup-link">Design Preview</a>
+       <a href="guide.html" id="signup-link">Guide Us</a>
+       <a href="order.html" id="signup-link">My Orders</a>
+    </nav>
+
+    <!-- Right Section: Search, Cart, Profile -->
+    <div class="nav-right" style="display: flex; align-items: center; gap: 20px;">
+
+      <div class="search-box">
+        <input type="text" placeholder="Search phone cases..." id="search-input">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <div id="search-dropdown" class="search-results-dropdown"></div>
+      </div>
+
+      <!-- Cart Icon -->
+      <a href="checkout.html" id="cart-link" style="display: none; color:white; font-size:20px;"><i
+          class="fa-solid fa-cart-shopping"></i></a>
+
+      <!-- User Profile -->
+      <div id="user-profile" style="display:none; cursor:pointer;"></div>
+    </div>
+  </header>
+
+  <style>
+    .user-avatar {
+      width: 35px;
+      height: 35px;
+      background-color: white;
+      color: #F4C2C2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      border: 2px solid white;
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const isLoggedIn = localStorage.getItem("userLoggedIn") === "true";
+      const userName = localStorage.getItem("userName") || "User";
+
+      const cartLink = document.getElementById("cart-link");
+      const loginLink = document.getElementById("login-link");
+      const signupLink = document.getElementById("signup-link");
+      const userProfile = document.getElementById("user-profile");
+
+      if (isLoggedIn) {
+        // Show Cart
+        cartLink.style.display = "inline";
+
+        // Hide Login/Signup
+        loginLink.style.display = "none";
+        signupLink.style.display = "none";
+
+        // Show Profile with Initial
+        const initial = userName.charAt(0).toUpperCase();
+        userProfile.innerHTML = `<div class="user-avatar" title="Logout">${initial}</div>`;
+        userProfile.style.display = "inline-block";
+
+        // Logout on Click
+        userProfile.onclick = () => {
+          if (confirm("Logout?")) {
+            localStorage.removeItem("userLoggedIn");
+            window.location.reload();
+          }
+        };
+      }
+
+      // Search Logic
+      const searchInput = document.getElementById("search-input");
+      const searchDropdown = document.getElementById("search-dropdown");
+      const modelLinks = document.querySelectorAll(".modal-grid a");
+
+      const models = Array.from(modelLinks).map(link => ({
+        name: link.innerText,
+        href: link.getAttribute("href")
+      }));
+
+      searchInput.addEventListener("input", () => {
+        const query = searchInput.value.toLowerCase().trim();
+        searchDropdown.innerHTML = "";
+
+        if (query) {
+          const filtered = models.filter(m => m.name.toLowerCase().includes(query));
+          if (filtered.length > 0) {
+            filtered.forEach(m => {
+              const div = document.createElement("div");
+              div.innerText = m.name;
+              div.onclick = () => window.location.href = m.href;
+              searchDropdown.appendChild(div);
+            });
+            searchDropdown.style.display = "block";
+          } else {
+            searchDropdown.style.display = "none";
+          }
+        } else {
+          searchDropdown.style.display = "none";
+        }
+      });
+
+      // Close dropdown on click outside
+      document.addEventListener("click", (e) => {
+        if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+          searchDropdown.style.display = "none";
+        }
+      });
+
+      // Newsletter Logic
+      window.subscribeNewsletter = () => {
+        const emailInput = document.getElementById("newsletter-email");
+        if (!emailInput.value || !emailInput.value.includes("@")) {
+          alert("Please enter a valid email address.");
+          return;
+        }
+
+        const confirmMsg = confirm("Do you want CaseCraft to send you messages?");
+        if (confirmMsg) {
+          alert("Successfully signed up! You will now receive updates from CaseCraft.");
+          emailInput.value = "";
+        }
+      };
+    });
+  </script>
+  <header class="header">
+    <div class="logo">
+      <img src="logo case.jpeg" alt="Logo">
+    </div>
+
+    <div class="welcome">
+
+      <h1>Customize your case with CaseCraft</h1>
+    </div>
+  </header>
+
+  <div class="slider">
+    <div class="slides">
+      <img src="phonecase img1.jpg" alt="image one">
+      <img src="final.jpg" alt="imag two">
+
+      <img src="phonecase img1.jpg" alt="image one">
+      <img src="final.jpg" alt="image two">
+    </div>
+  </div>
+
+  <div class="banner">
+    <!--for the pink border-->
+  </div>
+  <section class="how-it-works">
+    <h2> How CaseCraft Works</h2>
+
+    <div class="steps">
+      <div>📱 Choose your iPhone</div>
+      <div>🎨 Customize your design</div>
+      <div>📦 We deliver to you</div>
+    </div>
+  </section>
+
+  <!-- Video Section -->
+  <div style="width: 100%; overflow: hidden;">
+    <video src="case vid.mp4" autoplay muted loop style="width: 100%; height: auto; display: block; object-fit: cover;">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <!-- Image Slider Section -->
+  <style>
+    .slider-container {
+      width: 100%;
+      overflow: hidden;
+      margin-top: 20px;
+      /* Gap between video and slider */
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .slider-track {
+      display: flex;
+      width: calc(200%);
+      /* Width to accommodate duplicated slides */
+      animation: scroll 20s linear infinite;
+    }
+
+    .slide {
+      width: 50%;
+      /* Each set of images takes half the track */
+      display: flex;
+    }
+
+    .slide img {
+      width: 50%;
+      /* Single image width relative to slide group */
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+        /* Move by half the track width (one full set) */
+      }
+    }
+  </style>
+
+  <div class="slider-container">
+    <div class="slider-track">
+      <!-- First Set -->
+      <div class="slide">
+        <img src="slider1.jpg" alt="Slider Image 1">
+        <img src="slider2.jpg" alt="Slider Image 2">
+      </div>
+      <!-- Duplicate Set for Infinite Loop -->
+      <div class="slide">
+        <img src="slider1.jpg" alt="Slider Image 1">
+        <img src="slider2.jpg" alt="Slider Image 2">
+      </div>
+    </div>
+  </div>
+  <div class="model-heading">
+<img src="heart-Picsart-BackgroundChanger.png" class="heart left-heart" alt="heart">
+<section class="customize-section" id="customize">
+<h1>✨ Ready To Customize! ✨</h1>
+</section>
+
+  </div>
+
+  <!-- Choose Model Button -->
+  <div class="choose-model-section">
+    <button onclick="openModal()">Choose Your iPhone Model</button>
+  </div>
+
+  <!-- Modal -->
+  <div id="modelModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>Select Your iPhone Model</h2>
+
+      <div class="modal-grid">
+
+        <!-- Original to iPhone 5 -->
+        <a href="iphone1.html"> iPhone 1</a>
+        <a href="iphone3g.html"> iPhone 3G</a>
+        <a href="iphone3gs.html"> iPhone 3GS</a>
+        <a href="iphone4.html"> iPhone 4</a>
+        <a href="iphone4s.html"> iPhone 4S</a>
+        <a href="iphone5.html"> iPhone 5</a>
+        <a href="iphone5c.html"> iPhone 5C</a>
+        <a href="iphone5s.html"> iPhone 5S</a>
+
+        <!-- iPhone 6 to 8 -->
+        <a href="iphone6.html"> iPhone 6</a>
+        <a href="iphone6_Plus.html"> iPhone 6 Plus</a>
+        <a href="iphone6s.html"> iPhone 6S</a>
+        <a href="iphone6S_Plus.html"> iPhone 6S Plus</a>
+        <a href="iphone7.html"> iPhone 7</a>
+        <a href="iphone7_plus.html"> iPhone 7 Plus</a>
+        <a href="iphone8.html"> iPhone 8</a>
+        <a href="iphone8_plus.html"> iPhone 8 Plus</a>
+
+        <!-- iPhone X series -->
+        <a href="iphonex.html"> iPhone X</a>
+        <a href="iphonexr.html"> iPhone XR</a>
+        <a href="IphoneXs.html"> iPhone XS</a>
+        <a href="iphoneXS_max.html"> iPhone XS Max</a>
+
+        <!-- iPhone 11 -->
+        <a href="iphone11.html"> iPhone 11</a>
+        <a href="iphone11_pro.html"> iPhone 11 Pro</a>
+        <a href="iphone11_ProMax.html"> iPhone 11 Pro Max</a>
+
+        <!-- iPhone 12 -->
+        <a href="iphone12.html"> iPhone 12</a>
+        <a href="iphone12_mini.html"> iPhone 12 Mini</a>
+        <a href="iphone12_pro.html"> iPhone 12 Pro</a>
+        <a href="iphone12_ProMax.html"> iPhone 12 Pro Max</a>
+
+        <!-- iPhone 13 -->
+        <a href="iphone13.html"> iPhone 13</a>
+        <a href="iphone13_mini.html"> iPhone 13 Mini</a>
+        <a href="iphone13Pro.html"> iPhone 13 Pro</a>
+        <a href="iphone13_proMax.html"> iPhone 13 Pro Max</a>
+
+        <!-- iPhone 14 -->
+        <a href="iphone14.html"> iPhone 14</a>
+        <a href="iphone14_Plus.html"> iPhone 14 Plus</a>
+        <a href="iphone14_Pro.html"> iPhone 14 Pro</a>
+        <a href="iphone14_ProMax.html"> iPhone 14 Pro Max</a>
+
+        <!-- iPhone 15 -->
+        <a href="iphone15.html"> iPhone 15</a>
+        <a href="iphone15_Plus.html"> iPhone 15 Plus</a>
+        <a href="iphone15_pro.html"> iPhone 15 Pro</a>
+        <a href="iphone15_proMax.html"> iPhone 15 Pro Max</a>
+
+        <!-- iPhone 16 -->
+        <a href="iphone16.html"> iPhone 16</a>
+        <a href="iphone16_Plus.html"> iPhone 16 Plus</a>
+        <a href="iphone16e.html"> iPhone 16e</a>
+
+        <!-- iPhone 17 -->
+        <a href="iphone17.html"> iPhone 17</a>
+        <a href="iphone17_Pro.html"> iPhone 17 Pro</a>
+        <a href="iphone17 Pro_max.html"> iPhone 17 Pro Max</a>
+        <a href="iphone17_Air.html"> iPhone 17 Air</a>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="iphone models.js"></script>
+
+  <!--FOOTER-->
+  <footer class="footer">
+    <div class="footer-container">
+
+      <!-- Newsletter -->
+      <div class="footer-col">
+        <h4>NEWSLETTER</h4>
+        <div class="newsletter">
+          <input type="email" placeholder="Enter your email" id="newsletter-email">
+          <button onclick="subscribeNewsletter()">SIGN UP</button>
+        </div>
+        <p class="small-text">
+          By continuing, you agree to hear from CaseCraft.
+          Please refer to our Privacy Policy.
+        </p>
+
+        <h4>LET'S BE FRIENDS</h4>
+        <div class="social-icons">
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-facebook-f"></i>
+          <i class="fab fa-x-twitter"></i>
+          <i class="fab fa-pinterest-p"></i>
+          <i class="fab fa-tiktok"></i>
+        </div>
+      </div>
+
+      <!-- Column 2 -->
+      <div class="footer-col">
+        <h4>CASECRAFT</h4>
+        <ul>
+          <li>CaseCraft Club</li>
+          <li>Mobile App</li>
+          <li>Authentication</li>
+          <li>Promo Codes</li>
+          <li>Gift Cards</li>
+          <li>Reviews</li>
+        </ul>
+      </div>
+
+      <!-- Column 3 -->
+      <div class="footer-col">
+        <h4>DEVICE</h4>
+        <ul>
+          <li><strong>Apple</strong></li>
+          <li>iPhone 17 Pro Max</li>
+          <li>iPhone 17 Pro</li>
+          <li>iPhone 17</li>
+        </ul>
+      </div>
+
+      <!-- Column 4 -->
+      <div class="footer-col">
+        <h4>ABOUT</h4>
+        <ul>
+          <li>FAQ</li>
+          <li>Contact</li>
+          <li>About Us</li>
+          <li>Careers</li>
+          <li>Visit Us</li>
+        </ul>
+      </div>
+
+      <!-- Column 5 -->
+      <div class="footer-col">
+        <h4>GET HELP</h4>
+        <ul>
+          <li>FAQs</li>
+          <li>Track My Order</li>
+          <li>Contact Us</li>
+        </ul>
+      </div>
+
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2025 CaseCraft | Privacy Policy | Terms & Conditions</p>
+  </div>
+
+
+</body>
+
+</html>
